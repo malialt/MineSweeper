@@ -1,0 +1,144 @@
+{\rtf1\ansi\ansicpg1254\deff0\deflang1055{\fonttbl{\f0\froman\fprq2\fcharset162{\*\fname Times New Roman;}Times New Roman TUR;}{\f1\froman\fprq2\fcharset0 Times New Roman;}{\f2\fnil\fcharset162{\*\fname arial;}Arial TUR;}{\f3\froman\fprq2\fcharset162 Calibri;}{\f4\froman\fprq2\fcharset162 Consolas;}{\f5\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue0;\red0\green0\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\nowidctlpar\sl100\slmult0\qj\cf1\f0\fs25 University Name: Bilkent University\cf0\lang1023\f1\fs24\par
+\cf1\lang1055\f0\fs25 Department: Computer Science\cf0\lang1023\f1\fs24\par
+\cf1\lang1055\f0\fs25 Course Code: CS 223\cf0\lang1023\f1\fs24\par
+\cf1\lang1055\f0\fs25 Course Name: Digital Design\cf0\lang1023\f1\fs24\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\nowidctlpar\fi720\li3600\sl100\slmult0\qj\par
+\par
+\par
+\par
+\par
+\par
+\pard\nowidctlpar\sl100\slmult0\qj\par
+\par
+\par
+\par
+\pard\nowidctlpar\fi708\li708\sl100\slmult0\cf1\lang1055\b\i\f0\fs80 Mine Sweeper Game\cf0\lang1023\b0\i0\f1\fs24\par
+\pard\nowidctlpar\fi720\li1440\sl100\slmult0\par
+\pard\nowidctlpar\fi-360\li3600\sl100\slmult0\cf1\lang1055\b\f0\fs25 Onur Kocahan 21402013 Sec:03\cf0\lang1023\b0\f1\fs24\par
+\pard\nowidctlpar\fi300\li2532\sl100\slmult0\cf1\lang1055\b\f0\fs25      Mehmet Ali Altunta\'fe 21401004 Sec:03\cf0\lang1023\b0\f1\fs24\par
+\pard\nowidctlpar\sl100\slmult0\par
+\pard\nowidctlpar\fi720\li3600\sl100\slmult0\qj\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\par
+\pard\nowidctlpar\li3600\sl100\slmult0\qj\par
+\par
+\par
+\cf1\lang1055\f0\fs25 Report Submission Due Date : May 09, 2017\cf0\lang1023\f1\fs24\par
+\pard\nowidctlpar\sl100\slmult0\cf1\lang1055\b\f0 General Look To The Project\cf0\lang1023\b0\f1\par
+\par
+\pard\nowidctlpar\sl100\slmult0\qj\cf1\lang1055\f2\fs28 The approach we followed was to firstly have the game structure down. We achieved this by implementing the data and game modules. The main idea was storing certain values and then using them according to the game rules. After this we needed to implement the board and the bitmap. We take the data we need and add it to the board the board also contains a mapout module to make a random bomb table. Then all of this is added to the bitmap. The last part of the implementation was making the Ledmatrix module which displays the bitmap on the LEDs.\f0\fs24  \cf0\lang1023\f1\par
+\pard\nowidctlpar\sl100\slmult0\par
+\cf1\lang1055\b\f0 Block Diagram\cf0\lang1023\b0\f1\par
+\par
+\par
+\pard\sl100\slmult0\cf1\lang1055\f2 The project chosen for Cs223 was the game minesweeper implemented on the basys3 FPGA. The main idea was to replicate the original windows game of Minesweeper. For this implementation we used a Logic FPGA Set and Basys 3.\cf0\f0\par
+\pard\sa120\par
+\cf1\f2 The structure for the code goes as follows\cf0\f0\par
+\cf1\f2 The dot module : This module is the top module of the game. It takes all inputs and generates the point where the user is and generates the game map, and checks for the bomb also starts, resets and finished the game according to the given inputs.\cf0\f0\par
+\cf1\f2 The mapout module : This module generates a bombed map with random number of bombs and random distribution\cf0\f0\par
+\cf1\f2 The Sev_Seg_4digits module : This module displays the bomb number around while playing, and displays GO when the game is finished\cf0\f0\par
+\cf1\f2 The BomCounter module : This module counts the bomb around the point where the user is\cf0\f0\par
+\cf1\f2 The LedMatrix : It displays the given map either the played game so far or the bomb map on the LED matrix\cf0\f0\par
+\cf1\f2 The divider module : This module is an element of the LedMatrix module\cf0\f0\par
+\cf1\f2 The ClockDivider : This divider is the general divider for the game, it synchronizes the data\cf0\f0\par
+\pard\nowidctlpar\sl100\slmult0\lang1023\f1\par
+\cf1\lang1055\b\f0 Explanations of the Blocks\cf0\lang1023\b0\f1\par
+\par
+\pard\sl100\slmult0\qj\cf1\lang1055\ul\f2 Dot Module:\cf0\ulnone\f0\par
+\pard\sa120\qj\cf1\u8594?\f2 Function of the block is to control all of the game by encompassing all the blocks\cf0\f0\par
+\cf1\u8594?\f2 Dot module is the our program\rquote s main module. First of all this module has an option to show all the mines in the game with a Basys switch whose name is show map. After that this module in the game mainly call the option which are start the game end the game end continue the game. If you are not end the game, the module show the place where the user is with blue color on the 8*8 led matrix. If the user select a point which has no mine, the color where the user currently is turns to yellow and the game continues; otherwise the game ends and all mines become visible with the user's path that he passed. Additionaly, this module also has other modules which are BomCounter, SevSeg_4digit, ClkDivider, mapout, LedMatrix and lead the way game is going. With BomCounter's return value dot module show the number of mines in the seven segment display which is used later on in the SevSeg_4digit module.\cf0\f0\par
+\par
+\cf1\u8594?\f2 Details about parameters of top module:\cf0\f0\par
+\cf1\f2 Input: clk, click, reset, showMap, [3:0] dir,\cf0\f0\par
+\cf1\f2 Output: [7:0] rowsOut,output logic shcp, stcp, mr, oe, ds, a, b, c, d, e, f, g, dp, [3:0] an\cf0\f0\par
+\pard\nowidctlpar\sl100\slmult0\qj\lang1023\f1\par
+\par
+\cf1\lang1055\ul\f0 Mapout Module\cf0\lang1023\ulnone\f1\par
+\cf1\lang1055\f0\u8594? Function of this module is to create a bomb map with random distribution\cf0\lang1023\f1\par
+\cf1\lang1055\f0\u8594? This module takes the clock, reset, and a map to put bombs in it. In the module, when reset switch is open or initialized first time, the module initializes an 8-bit number and fills the map by XOR'ing the numbers bit according to a function. \cf0\lang1023\f1\par
+\cf1\lang1055\f0\u8594? Details about parameters of game module:\cf0\lang1023\f1\par
+\cf1\lang1055\f0 Input: logic clk, logic reset\cf0\lang1023\f1\par
+\cf1\lang1055\f0 Output: logic [7:0][23:0]map\cf0\lang1023\f1\par
+\par
+\cf1\lang1055\ul\f0 BomCounter Module\cf0\lang1023\ulnone\f1\par
+\cf1\lang1055\f0\u8594? Function of this module is caounting the bombs around the given point (where the user is).\cf0\lang1023\f1\par
+\cf1\lang1055\f0\u8594? This module takes clock, bomb map, the point where the user is gameOver logic and a counter which keeps the number of bombs as parameters. First at each posedge clock, it checks if the game is over. If the game is not over It starts to check the point, find it on the given bomb map and counts the bombs around it. At special points e.g. the corners of the LED matrix, it uses special if cases to not count the other corner as bomb. One of the inputs keeps the information of where the user is and the others keeps the map and gameOver logic. As the output parameter a 4-bit counter is taken. These are the parameter inputs. This module is directly connected with the dot module i.e. top module of the game. \cf0\lang1023\f1\par
+\cf1\lang1055\f0\u8594?  Details about parameters of data module:\cf0\lang1023\f1\par
+\cf1\lang1055\f0 Input: logic clk, gameOver, input logic [7:0][23:0]map, input logic [1:0][2:0] point,\cf0\lang1023\f1\par
+\pard\sl100\slmult0\cf1\lang1055\f3 Output: logic [3:0] counter\cf0\f4\fs21\par
+\par
+\par
+\pard\sa120\cf1\ul\f3\fs24 SevSeg_4digit Module:\cf0\ulnone\f0\par
+\pard\sa120\qj\cf1\f4\u8594?\f2 Function of the block is showing the current mine number of the game and stating when the game is end.\cf0\f0\par
+\cf1\f4\u8594?\f2 This module handles with the circumstances related to demonstration of seven segment digit display. At the beginning of the game four inputs whose names are in0, in1 ,in2 and in3 attain to their initial condions. Later, the game assign the number of mines the the last 7 segment display. When the game is end all the four 7 segment digit display become active and the user shows the \ldblquote -GO-\rdblquote  output which states the game is over.\cf0\f0\par
+\par
+\cf1\f4\u8594?\~ \f2 Details about parameters of top module:\cf0\f0\par
+\cf1\f2 Input: input clk, [3:0] in0, in1, in2, in3,\cf0\f0\par
+\cf1\f2 Output: a, b, c, d, e, f, g, dp, [3:0] an\cf0\f0\par
+\par
+\pard\sa120\cf1\ul\f3 ClkDivider Module\cf0\ulnone\f0\par
+\pard\sa120\qj\cf1\f4\u8594?\~ \f2 Function of this module is mainly slowing the main clk which using in the dot module.\cf0\f0\par
+\cf1\f4\u8594?\~ \f2 This module takes the main clock of the game which is used in all other modules. And make a division operation to it and creates a new clock whose name is \ldblquote clk_NoBuf\rdblquote  that is going to be used in the dot module. The reason why we do is in a few certain situation be have load some much operation to main clock, to prevent from the timing problems.\cf0\f0\par
+\cf1\f4\u8594?\~ \f2 Details about parameters of game module:\cf0\f0\par
+\cf1\f2 input clk,\cf0\f0\par
+\cf1\f2 output clk_NoBuf\cf0\f0\par
+\pard\sl100\slmult0\f4\fs21\par
+\pard\nowidctlpar\sl100\slmult0\qj\lang1023\f1\fs24\par
+\cf1\lang1055\ul\f4 Divide Module\cf0\lang1023\ulnone\f1\par
+\cf1\lang1055\f4\u8594? Function of the Divide Module is generating a clock for the LedMatrix module\cf0\lang1023\f1\par
+\cf1\lang1055\f4\u8594? This module is an inner module in LedMatrtix Module\cf0\lang1023\f1\par
+\cf1\lang1055\f4\u8594?  Details about parameters of bitmap module:\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Input: logic clk\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Output: logic shcp, stcp,oe, int i, output logic f \cf0\lang1023\f1\par
+\par
+\par
+\cf1\lang1055\ul\f4 LedMatrix Module\cf0\lang1023\ulnone\f1\par
+\cf1\lang1055\f4 -->The function of this module is displaying the maps that are generated by the Dot Module on the LED matrix.\cf0\lang1023\f1\par
+\cf1\lang1055\f4\u8594? This module takes clock, and a map, and gives outputs for generating the map on the LED matrix parameters. This module takes in the board and game conditions to change and output the LED matrix signals. First it takes the given map(either the bomb map or the game map) and generates rowsOut and other logics to display the map on the LEDs. \cf0\lang1023\f1\par
+\cf1\lang1055\f4\u8594?  Details about parameters of display module:\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Input: logic clk, logic [7:0][23:0] inp\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Output: logic [7:0] rowsOut, logic shcp, stcp, mr, oe, ds\cf0\lang1023\f1\par
+\pard\nowidctlpar\sl100\slmult0\par
+\pard\nowidctlpar\sl100\slmult0\qj\cf1\lang1055\b\f4 References\cf0\lang1023\b0\f1\par
+\cf1\lang1055\f4\u8594? In display part of our code we have used a code from that source in our project\rquote s LEDMatrix module: \ldblquote\cf0{\field{\*\fldinst{HYPERLINK "https://github.com/sonmezonur/FLAB/tree/master/FLAB_Project/OutputProvider"}}{\fldrslt{\ul\cf2 https://github.com/sonmezonur/FLAB/tree/master/FLAB_Project/OutputProvider}}}\lang1023\f1\fs24\rdblquote  In LedMatrix module code is modified to synchronize the LED output and game\rquote s play development. \par
+\pard\nowidctlpar\sl100\slmult0\par
+\pard\nowidctlpar\sl100\slmult0\qj\cf1\lang1055\b\f4 Appendices\cf0\lang1023\b0\f1\par
+\cf1\lang1055\f4 The hardware parts that we used in our project:\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Betiboard LED matrix\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Basys3 switches\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Basys3 key buttons\cf0\lang1023\f1\par
+\pard\nowidctlpar\sl100\slmult0\par
+\pard\nowidctlpar\sl100\slmult0\qj\cf1\lang1055\f4 Main blocks and related main files with original names:\cf0\lang1023\f1\par
+\cf1\lang1055\ul\f4 Block\tab\ulnone\tab\tab\tab\ul Filename\cf0\lang1023\ulnone\f1\par
+\cf1\lang1055\f4 Dot Module\tab\tab\tab dot.sv\cf0\lang1023\f1\par
+\cf1\lang1055\f4 Mapout Module\tab\tab mapout.sv\cf0\lang1023\f1\par
+\cf1\lang1055\f4 BomCounter Module\tab\tab BomCounter.sv\cf0\lang1023\f1\par
+\cf1\lang1055\f4 LedMatrix Module\tab\tab LedMatrix.sv\cf0\lang1023\f1\par
+\cf1\lang1055\f4 ClockDivider Module\tab              ClkDivider.sv\cf0\lang1023\f1\par
+\cf1\lang1055\f4 SevSeg_4digit Module\tab SevSeg_4digit.sv\cf0\lang1023\f1\par
+\pard\nowidctlpar\lang1055\f4 Divide Module                             \cf1 LedMatrix.sv\cf0\lang1023\f1\par
+\pard\sa200\sl276\slmult1\lang1033\f5\fs22\par
+}
+ 
